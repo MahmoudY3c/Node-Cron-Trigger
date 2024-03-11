@@ -1,0 +1,17 @@
+{
+  "name": "Node-Cron-Trigger",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MahmoudY3c/Node-Cron-Trigger.git",
+  "author": "MahmoudY3c <wpsmahmoud25@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cron-parser": "^4.9.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.26",
+    "@types/node-cron": "^3.0.11",
+    "typescript": "^5.4.2"
+  }
+}
