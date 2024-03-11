@@ -4,7 +4,6 @@ import path from 'path';
 import cronParser from 'cron-parser';
 import { ITaskOptions } from './NodeCronTrigger';
 
-const __dirname = './'
 const dir = (d: string) => path.resolve(__dirname, d);
 // Directory to store tasks history
 const historyPath = dir('history.log');

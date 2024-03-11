@@ -25,6 +25,13 @@ class NodeCronTrigger {
     Object.keys(tasks).forEach((task, index) => {
       // return tasks[task].task()
       const taskData = tasks[task];
+      
+      // validate schedule expression 
+      const isValidCronExpression = this.validate(taskData.schedule);
+      if(!isValidCronExpression) {
+        throw new Error('Invalid cron expression');
+      }
+
       scheduledTasks[index] = cron.schedule(taskData.schedule, () => {
         taskData.task();
         updateTasksDate(tasks);
