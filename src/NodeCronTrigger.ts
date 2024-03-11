@@ -46,4 +46,4 @@ class NodeCronTrigger {
   getTasks = cron.getTasks;
 }
 
-module.exports = NodeCronTrigger;
+export default NodeCronTrigger;
