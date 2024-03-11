@@ -1,6 +1,6 @@
 // the value is an object of pairs key / value - key = task name as it's a good behaviour to give your task a name and value = object that have your cron options
 
-import { ITaskOptions } from "./NodeCronTrigger";
+import NodeCronTrigger, { ITaskOptions } from "./NodeCronTrigger";
 
 // type cronStringSyntax = '* * * * * *';
 
@@ -20,3 +20,6 @@ const tasks: ITaskOptions = {
   },
 };
 
+const runner = new NodeCronTrigger(tasks);
+
+console.log(runner.getJobs());
