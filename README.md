@@ -47,10 +47,22 @@ console.log(runner.historyPath);
 
 # Methods
 
-- because of `node-cron-trigger` is a cron wrapper you can use any `node-cron` method and options beside the `node-cron-trigger` default usage described above you can also use a method like `schedule`, `validate`, `getTasks` of `node-cron` + also 3 more options like `getHistory` which return your tasks object that [referred here](#history), `getTaskNextRunTime` that's will take the cron expression as argument and it will return the date of the task next run date, `clearHistory` that will remove the `node-cron-trigger` history
+- because of `node-cron-trigger` is a cron wrapper you can use any `node-cron` method and options beside the `node-cron-trigger` default usage described above you can also use a method like `schedule`, `validate`, `getTasks` of `node-cron` + also 4 more options like `getHistory` which return your tasks object that [referred here](#history), `getTaskNextRunTime` that's will take the cron expression as argument and it will return the date of the task next run date, `clearHistory` that will remove the `node-cron-trigger` history, `historyPath` property that will show you the path of the history log by default it's the default path where the script located
 
 # History 
 
 - `Node-Cron-Trigger` history is a log file that consist of object the objects keys is the `tasks-names` and each `task-name` is an object with 2 keys `createdAt` and `nextRunDate` the file will looks like 
 
 
+``` json
+{
+  "runAt12AM": {
+    "createdAt": "2024-03-12T02:49:23.536Z",
+    "nextRunDate": "2024-03-12T22:00:00.000Z"
+  },
+  "runEach5Mins": {
+    "createdAt": "2024-03-12T02:49:23.563Z",
+    "nextRunDate": "2024-03-12T02:53:00.000Z"
+  }
+}
+```
