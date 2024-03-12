@@ -26,6 +26,7 @@ class NodeCronTrigger {
   cronJobs?: {
     tasks?: ITaskOptions;
     scheduledTasks?: ScheduledTask[];
+    cronTasks?: Map<string, ScheduledTask>;
   };
 
   historyPath: string = '';
@@ -38,7 +39,7 @@ class NodeCronTrigger {
   init(tasks: ITaskOptions) {
     // create history.log file
     this.createHistoryLog();
-    // getting the tasks history
+    // update the tasks History log and get it
     const tasksHistory = this.defineTasks(tasks);
     // check for expaired tasks and run them on server startup
     this.runExpairedTasksOnStartup(tasks, tasksHistory);
@@ -59,6 +60,7 @@ class NodeCronTrigger {
         throw new Error('Invalid cron expression');
       }
 
+      // handle createing the tasks
       scheduledTasks[index] = cron.schedule(taskData.schedule, () => {
         taskData.task();
         this.updateTasksDate(tasks);
@@ -68,6 +70,7 @@ class NodeCronTrigger {
     this.cronJobs = {
       tasks,
       scheduledTasks,
+      cronTasks: this.getTasks(),
     };
   }
 

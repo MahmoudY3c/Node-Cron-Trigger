@@ -5,6 +5,9 @@
   "repository": "https://github.com/MahmoudY3c/Node-Cron-Trigger.git",
   "author": "MahmoudY3c <wpsmahmoud25@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "tsc && nodemon dist/index.js"
+  },
   "dependencies": {
     "cron-parser": "^4.9.0",
     "node-cron": "^3.0.3"
