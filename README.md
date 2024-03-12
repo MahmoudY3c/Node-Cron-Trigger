@@ -66,3 +66,6 @@ console.log(runner.historyPath);
   }
 }
 ```
+
+# Store 
+- storing data by `Node-Cron-Trigger` can made by any data store like databases or redis store or anything else by default it's using `FileStore` to store the history in log file but also you have the free to use your favorite data store but keep in mind that any data store is should provide 3 methods `setItem` which take the data as key, value like `localStorage` in browser + `getItem` which take the key as argument + `removeItem` which also take `key` as an argument and each one of them is should return a promise to handle any type of data storage you can checkout the example you can show it in `Store.ts` file 
