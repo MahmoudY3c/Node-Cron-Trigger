@@ -4,7 +4,7 @@ import FileStore, { IStore } from './Store';
 
 export interface ITask {
   task: Function;
-  schedule: /* cronStringSyntax */ string;
+  schedule: string;
   options?: ScheduleOptions;
 }
 
