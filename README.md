@@ -22,13 +22,13 @@ const tasks = {
       scheduled: true,
     },
     task() {
-      console.log('hey whatever you did i will run at 12 AM even if after restarting your server');
+      console.log('hey whatever you did i will run at 12 AM even after restarting the server');
     },
   },
   "runEach5Mins": {
     schedule: '* 5 * * * *',
     task() {
-      console.log('hey whatever you did i will run each 5 minutes of any hour even if after restarting your server');
+      console.log('hey whatever you did i will run each 5 minutes of any hour even after restarting the server');
     },
   },
 };
