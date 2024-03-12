@@ -6,7 +6,7 @@
 
 # Usage
 
-- unlike `node-cron` which save the tasks at object and use `uuidv4` to generate random keys `Node-Cron-Trigger` lets you define the tasks as an object of keys - the key = `the task name` and the value is an object with 3 options
+- `Node-Cron-Trigger` lets you define the tasks as an object of keys - the key = `the task name` and the value is an object with 3 options
   1. **schedule:** the cron expression like `* * * * * *`
   2. **options:** `node-cron` schedule options you can find it in the following url [Schedule Options](https://github.com/node-cron/node-cron?tab=readme-ov-file#options)
   3. **task:** your task handler
