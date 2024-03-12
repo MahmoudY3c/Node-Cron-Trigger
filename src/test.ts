@@ -7,7 +7,7 @@ import NodeCronTrigger, { ITaskOptions } from "./NodeCronTrigger";
 
 const tasks: ITaskOptions = {
   "runAt12AM": {
-    schedule: '12 28 8 74 47 5',
+    schedule: '0 0 0 * * *',
     options: {
       scheduled: true,
     },
@@ -16,7 +16,7 @@ const tasks: ITaskOptions = {
     },
   },
   "runEach5Mins": {
-    schedule: '',
+    schedule: '* 5 * * * *',
     task() {
       console.log('hey whatever you did i will run each 5 minutes of any hour even if after restarting your server');
     },
@@ -25,4 +25,12 @@ const tasks: ITaskOptions = {
 
 const runner = new NodeCronTrigger(tasks);
 
-console.log(runner.getJobs());
+// console.log(runner.getJobs());
+
+// get the tasks history object
+// console.log(runner.getHistory());
+// false
+console.log(runner.validate('* 4'));
+// get history file path
+console.log(runner.historyPath);
+console.log(runner.getTaskNextRunTime('0 0 0 * * *'))

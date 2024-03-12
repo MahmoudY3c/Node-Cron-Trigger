@@ -31,39 +31,37 @@ class NodeCronTrigger {
 
   historyPath: string = '';
 
-  constructor(tasks: ITaskOptions) {
-    this.init(tasks);
-    this.tasksRunner(tasks);
+  constructor(tasks?: ITaskOptions) {
+    if (tasks) {
+      this.#init(tasks);
+      this.#tasksRunner(tasks);
+    }
   }
 
-  init(tasks: ITaskOptions) {
+  #init(tasks: ITaskOptions) {
     // create history.log file
-    this.createHistoryLog();
+    this.#createHistoryLog();
     // update the tasks History log and get it
-    const tasksHistory = this.defineTasks(tasks);
+    const tasksHistory = this.#defineTasks(tasks);
     // check for expaired tasks and run them on server startup
-    this.runExpairedTasksOnStartup(tasks, tasksHistory);
+    this.#runExpairedTasksOnStartup(tasks, tasksHistory);
     // update the tasks next run time to handle their expairation date
-    this.updateTasksDate(tasks, tasksHistory);
+    this.#updateTasksDate(tasks, tasksHistory);
   }
 
-  tasksRunner(tasks: ITaskOptions) {
+  #tasksRunner(tasks: ITaskOptions) {
     const scheduledTasks: ScheduledTask[] = [];
 
     Object.keys(tasks).forEach((task, index) => {
       // return tasks[task].task()
       const taskData = tasks[task];
-
-      // validate schedule expression 
-      const isValidCronExpression = this.validate(taskData.schedule);
-      if (!isValidCronExpression) {
-        throw new Error('Invalid cron expression');
-      }
+      // validate the expression is true
+      this.#validateExpression(taskData.schedule);
 
       // handle createing the tasks
       scheduledTasks[index] = cron.schedule(taskData.schedule, () => {
         taskData.task();
-        this.updateTasksDate(tasks);
+        this.#updateTasksDate(tasks);
       }, taskData.options || {});
     });
 
@@ -74,36 +72,47 @@ class NodeCronTrigger {
     };
   }
 
+  #validateExpression(schedule: string) {
+      // validate schedule expression 
+      const isValidCronExpression = this.validate(schedule);
+      if (!isValidCronExpression) {
+        throw new Error(`Invalid cron expression '${schedule}'`);
+      }
+  }
+
   // a function that takes the object of tasks to handle defining tasks to history.log including tasks created data and next run date
   // the key in the object is the task name and the value is object takes { schedule }
-  defineTasks(Tasks: ITaskOptions): ITasksHistory {
+  #defineTasks(Tasks: ITaskOptions): ITasksHistory {
     try {
       // getting task history
       const history: ITasksHistory = this.getHistory();
       // getting tasks names then loop
       const TasksArray = Object.keys(Tasks);
-      TasksArray.forEach(task => {
+      TasksArray.forEach(taskName => {
         // check if task already exists or not to define it
-        if (!history[task]) {
-          history[task] = {
+        if (!history[taskName]) {
+          // validate the expression is true
+          this.#validateExpression(Tasks[taskName].schedule);
+
+          history[taskName] = {
             createdAt: new Date(),
-            nextRunDate: this.getTaskNextRunTime(Tasks[task].schedule),
+            nextRunDate: this.getTaskNextRunTime(Tasks[taskName].schedule),
           };
         }
       });
 
       // saving tasks
-      this.updateHistory(history);
+      this.#updateHistory(history);
 
       return history;
-    } catch (error) {
-      // throw 'Error saving tasks to JSON file: ' + error;
+    } catch (error: any) {
+      // error.message = 'Error saving tasks to JSON file: ' + error.message;
       throw error;
     }
   }
 
   // check and run expaired tasks on server startup
-  runExpairedTasksOnStartup(tasks: ITaskOptions, history: ITasksHistory) {
+  #runExpairedTasksOnStartup(tasks: ITaskOptions, history: ITasksHistory) {
     console.log('==================================================');
     console.log('checking for expaired tasks to run them on startup');
     console.log('==================================================');
@@ -127,7 +136,7 @@ class NodeCronTrigger {
   }
 
   // update tasks next run time
-  updateTasksDate(tasks: ITaskOptions, history?: ITasksHistory) {
+  #updateTasksDate(tasks: ITaskOptions, history?: ITasksHistory) {
     console.log('====================================');
     console.log('updating tasks date ................');
     console.log('====================================');
@@ -138,11 +147,11 @@ class NodeCronTrigger {
       }
     });
 
-    this.updateHistory(tasksHistory);
+    this.#updateHistory(tasksHistory);
   }
 
-  createHistoryLog() {
-    this.historyPath = this.dir('history.log');
+  #createHistoryLog() {
+    this.historyPath = this.#dir('history.log');
     // check if the tasks history file exists in the current directory or not to create it
     if (!fs.existsSync(this.historyPath)) {
       fs.writeFileSync(this.historyPath, '{}');
@@ -156,7 +165,7 @@ class NodeCronTrigger {
   }
 
   // saving the tasks next run date in history.log
-  updateHistory(tasksObject: ITasksHistory) {
+  #updateHistory(tasksObject: ITasksHistory) {
     fs.writeFileSync(this.historyPath, JSON.stringify(tasksObject, null, 2), 'utf8');
   }
 
@@ -167,7 +176,7 @@ class NodeCronTrigger {
   }
 
   // get the dirname + add the file path
-  dir(d: string) {
+  #dir(d: string) {
     return path.resolve(__dirname, d);
   }
 
