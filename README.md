@@ -60,7 +60,7 @@ console.log(runner.historyPath);
     "createdAt": "2024-03-12T02:49:23.536Z",
     "nextRunDate": "2024-03-12T22:00:00.000Z"
   },
-  "runEach5Mins": {
+  "runEach1Mins": {
     "createdAt": "2024-03-12T02:49:23.563Z",
     "nextRunDate": "2024-03-12T02:53:00.000Z"
   }

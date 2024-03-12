@@ -12,7 +12,7 @@ const tasks: ITaskOptions = {
       console.log('hey whatever you did i will run at 12 AM even if after restarting your server');
     },
   },
-  "runEach5Mins": {
+  "runEach1Mins": {
     schedule: '*/1 * * * *',
     task() {
       console.log('hey whatever you did i will run each 1 minutes of any hour even if after restarting your server');
