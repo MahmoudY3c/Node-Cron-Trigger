@@ -1,9 +1,6 @@
-// the value is an object of pairs key / value - key = task name as it's a good behaviour to give your task a name and value = object that have your cron options
+// the value is an object of pairs key / value - key = task name and value = object that have your cron options
 
 import NodeCronTrigger, { ITaskOptions } from "./NodeCronTrigger";
-
-// type cronStringSyntax = '* * * * * *';
-
 
 const tasks: ITaskOptions = {
   "runAt12AM": {
@@ -16,9 +13,9 @@ const tasks: ITaskOptions = {
     },
   },
   "runEach5Mins": {
-    schedule: '* 5 * * * *',
+    schedule: '*/1 * * * *',
     task() {
-      console.log('hey whatever you did i will run each 5 minutes of any hour even if after restarting your server');
+      console.log('hey whatever you did i will run each 1 minutes of any hour even if after restarting your server');
     },
   },
 };
@@ -30,7 +27,7 @@ const runner = new NodeCronTrigger(tasks);
 // get the tasks history object
 // console.log(runner.getHistory());
 // false
-console.log(runner.validate('* 4'));
-// get history file path
-console.log(runner.historyPath);
-console.log(runner.getTaskNextRunTime('0 0 0 * * *'))
+// console.log(runner.validate('* 4'));
+// // get history file path
+// console.log(runner.historyPath);
+// console.log(runner.getTaskNextRunTime('0 0 0 * * *'))

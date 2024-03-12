@@ -180,6 +180,10 @@ class NodeCronTrigger {
     return path.resolve(__dirname, d);
   }
 
+  clearHistory() {
+    fs.unlinkSync(this.historyPath)
+  }
+
   getJobs() {
     return this.cronJobs;
   }
