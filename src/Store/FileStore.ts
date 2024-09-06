@@ -2,9 +2,11 @@ import fs from 'fs';
 import path from 'path';
 
 export default class FileStore {
-  historyPath: string = '';
+  historyPath: string;
 
-  constructor() {
+  constructor(historyPath: string, historyFileName: string = 'history.log') {
+    if (!historyPath) throw new Error('historyPath must be provided')
+    this.historyPath = path.join(historyPath, historyFileName);
     this.#createHistoryLog();
   }
 
@@ -52,7 +54,6 @@ export default class FileStore {
   }
 
   #createHistoryLog(): void {
-    this.historyPath = this.#dir('history.log');
     // check if the tasks history file exists in the current directory or not to create it
     if (!fs.existsSync(this.historyPath)) {
       fs.writeFileSync(this.historyPath, '{}');
@@ -62,10 +63,5 @@ export default class FileStore {
   // saving the tasks next run date in history.log
   #updateHistory(historyObject: any) {
     fs.writeFileSync(this.historyPath, JSON.stringify(historyObject), 'utf8');
-  }
-
-  // get the dirname + add the file path
-  #dir(d: string) {
-    return path.resolve(__dirname, d);
   }
 }

@@ -1,6 +1,7 @@
 import cron, { ScheduleOptions, ScheduledTask } from 'node-cron';
 import cronParser from 'cron-parser';
 import FileStore from './Store/FileStore';
+import path from 'path';
 
 export interface IStore {
   setItem: (key: string, value: any) => Promise<boolean>;
@@ -37,9 +38,11 @@ class NodeCronTrigger {
   Tasks: ITaskOptions = {};
   store: IStore;
 
-  constructor(tasks?: ITaskOptions, store?: typeof FileStore) {
+  constructor(tasks?: ITaskOptions, options?: { store?: IStore, historyFilePath?: string, historyFileName?: string }) {
     // init store
-    this.store = store ? new store() : new FileStore();
+    this.store = options?.store
+      ? options.store
+      : new FileStore(options?.historyFilePath || globalThis.process.cwd(), options?.historyFileName || '');
 
     if (tasks) {
       this.#init(tasks)
@@ -156,7 +159,7 @@ class NodeCronTrigger {
         tasksHistory[task].nextRunDate = this.getTaskNextRunTime(tasks[task].schedule);
       }
     });
-    
+
     await this.#updateHistory(tasksHistory);
   }
 

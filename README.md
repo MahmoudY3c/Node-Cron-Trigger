@@ -10,6 +10,7 @@
   * __schedule:__ the cron expression like `* * * * * *`
   * __options:__ `node-cron` schedule options you can find it in the following url [Schedule Options](https://github.com/node-cron/node-cron?tab=readme-ov-file#options)
   * __task:__ your task handler
+- `NodeCronTrigger` accepts 2 arguments first one start as descriped above and optional `options` argument which is an object that object allows you to specify your custom store instead of default filesystem store or the filesystem history.log file path, name like `new NodeCronTrigger({ historyFilePath: process.cwd(), historyFileName: 'tasks.log' })` or `new NodeCronTrigger({ store: new MyCustomStore() })`
 
 - Usage example
 ``` javascript
