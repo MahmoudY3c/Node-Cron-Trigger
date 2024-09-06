@@ -1,13 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export interface IStore {
-  setItem: (key: string, value: any) => Promise<boolean>;
-  getItem: (key: string) => Promise<any>;
-  removeItem: (key: string) => Promise<boolean>;
-}
-
-class FileStore {
+export default class FileStore {
   historyPath: string = '';
 
   constructor() {
@@ -54,8 +48,7 @@ class FileStore {
   #getHistory() {
     // handle when the file accidentally deleted
     this.#createHistoryLog();
-    const data = JSON.parse(fs.readFileSync(this.historyPath, 'utf-8') || '{}');
-    return data;
+    return JSON.parse(fs.readFileSync(this.historyPath, 'utf-8') || '{}');
   }
 
   #createHistoryLog(): void {
@@ -76,5 +69,3 @@ class FileStore {
     return path.resolve(__dirname, d);
   }
 }
-
-export default FileStore;

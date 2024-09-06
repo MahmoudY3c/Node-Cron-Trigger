@@ -22,6 +22,12 @@ const tasks: ITaskOptions = {
 
 const runner = new NodeCronTrigger(tasks);
 
+
+// setTimeout(() => {
+  // console.log(runner.Tasks)
+  // runner.store.getItem('history').then(history => console.log(JSON.parse(history), '............ history ..............'));
+// }, 1000 * 2);
+
 // console.log(runner.getJobs());
 
 // get the tasks history object

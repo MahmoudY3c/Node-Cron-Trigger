@@ -45,13 +45,25 @@ console.log(runner.validate('* 4'));
 console.log(runner.historyPath);
 ```
 
+
+
+# Store 
+- storing data by `Node-Cron-Trigger` can made by any data store like databases or redis store or anything else by default it's using `FileStore` to store the history in log file but also you have the free to use your favorite data store but keep in mind that any data store is should provide 3 methods `setItem` which take the data as key, value like `localStorage` in browser + `getItem` which take the key as argument + `removeItem` which also take `key` as an argument and each one of them is should return a promise to handle any type of data storage you can checkout the example you can show it in `Store.ts` file 
+- in that store all data will be save as json string in key called `history` so if you planning to store history in a pre defined store like SQL you will need to define the `history` key as a string type like `nvarchar(max)`
+
+
 # Methods
 
-- because of `node-cron-trigger` is a cron wrapper you can use any `node-cron` method and options beside the `node-cron-trigger` default usage described above you can also use a method like `schedule`, `validate`, `getTasks` of `node-cron` + also 4 more options like `getHistory` which return your tasks object that [referred here](#history), `getTaskNextRunTime` that's will take the cron expression as argument and it will return the date of the task next run date, `clearHistory` that will remove the `node-cron-trigger` history, `historyPath` property that will show you the path of the history log by default it's the default path where the script located
+- because of `node-cron-trigger` is a cron wrapper you can use any `node-cron` method and options beside the `node-cron-trigger` default usage described above you can also use a method like `schedule`, `validate`, `getTasks` of `node-cron` [check node-cron docs](https://github.com/node-cron/node-cron)
+
+- Also 4 more options like
+  * `getHistory` which return your tasks object that [referred here](#history) you can use it like `new NodeCronTrigger(tasks).getHistory()`
+  * `getTaskNextRunTime` that's will take the cron expression as argument and it will return the date of the task next run date it's just a funny method to checkout your cron expression next run date you can try it like `console.log(new NodeCronTrigger(tasks).getTaskNextRunTime('*/5 * * * *'))`
+  * `clearHistory` that will remove the `node-cron-trigger` history - it's a cleanup method that can be used when you change you cron tasks because of `node-cron-trigger` will persist any defined tasks even if they removed their data will still exists for example if you was have 3 tasks like `runEach1Mins, runEach2Mins, runEach3Mins` and removed the task of `runEach1Mins` from your object in `node-cron-trigger` the data of `runEach1Mins` will stay exists so you can use it to remove the old tasks data and it will automatically create a new history with presented cron jobs `that method won't effect any of your tasks whatever the tasks data exists or removed because only defined tasks will run`
 
 # History 
 
-- `Node-Cron-Trigger` history is a log file that consist of object the objects keys is the `tasks-names` and each `task-name` is an object with 2 keys `createdAt` and `nextRunDate` the file will looks like 
+- `Node-Cron-Trigger` history by default it's a log file that consist of object with one key `history` which is a json string contains the data for your tasks - the tasks is saved in the json data as an object like `tasks-names` and each `task-name` is an object with 2 keys `createdAt` and `nextRunDate` the file will looks like 
 
 
 ``` json
@@ -66,6 +78,3 @@ console.log(runner.historyPath);
   }
 }
 ```
-
-# Store 
-- storing data by `Node-Cron-Trigger` can made by any data store like databases or redis store or anything else by default it's using `FileStore` to store the history in log file but also you have the free to use your favorite data store but keep in mind that any data store is should provide 3 methods `setItem` which take the data as key, value like `localStorage` in browser + `getItem` which take the key as argument + `removeItem` which also take `key` as an argument and each one of them is should return a promise to handle any type of data storage you can checkout the example you can show it in `Store.ts` file 

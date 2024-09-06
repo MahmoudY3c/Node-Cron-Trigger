@@ -1,6 +1,12 @@
 import cron, { ScheduleOptions, ScheduledTask } from 'node-cron';
 import cronParser from 'cron-parser';
-import FileStore, { IStore } from './Store';
+import FileStore from './Store/FileStore';
+
+export interface IStore {
+  setItem: (key: string, value: any) => Promise<boolean>;
+  getItem: (key: string) => Promise<any>;
+  removeItem: (key: string) => Promise<boolean>;
+}
 
 export interface ITask {
   task: Function;
@@ -29,15 +35,16 @@ class NodeCronTrigger {
   };
 
   Tasks: ITaskOptions = {};
-  store: IStore = new FileStore();
+  store: IStore;
 
-  constructor(tasks?: ITaskOptions, store?: any) {
+  constructor(tasks?: ITaskOptions, store?: typeof FileStore) {
+    // init store
+    this.store = store ? new store() : new FileStore();
+
     if (tasks) {
       this.#init(tasks)
         .then(() => {
           this.#tasksRunner(tasks);
-          // init store
-          if (store) this.store = store;
         });
     }
   }
@@ -149,7 +156,7 @@ class NodeCronTrigger {
         tasksHistory[task].nextRunDate = this.getTaskNextRunTime(tasks[task].schedule);
       }
     });
-
+    
     await this.#updateHistory(tasksHistory);
   }
 
@@ -163,7 +170,7 @@ class NodeCronTrigger {
   async #updateHistory(tasksObject: ITasksHistory): Promise<void> {
     // handle re define tasks when data removed
     const keys = Object.keys(tasksObject);
-    if(!keys.length) this.#defineTasks(this.Tasks);
+    if (!keys.length) this.#defineTasks(this.Tasks);
     await this.store.setItem('history', JSON.stringify(tasksObject));
   }
 

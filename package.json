@@ -1,7 +1,7 @@
 {
-  "name": "Node-Cron-Trigger",
+  "name": "node-cron-trigger",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "disr/test.js",
   "repository": "https://github.com/MahmoudY3c/Node-Cron-Trigger.git",
   "author": "MahmoudY3c <wpsmahmoud25@gmail.com>",
   "license": "MIT",
