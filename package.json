@@ -1,14 +1,15 @@
 {
   "name": "node-cron-trigger",
-  "version": "1.0.0",
-  "main": "disr/test.js",
+  "version": "1.0.2",
+  "main": "dist/NodeCronTrigger.js",
   "repository": "https://github.com/MahmoudY3c/Node-Cron-Trigger.git",
   "author": "MahmoudY3c <wpsmahmoud25@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "gulp",
     "complie": "tsc -w",
-    "dev": "nodemon dist/test.js"
+    "dev": "nodemon dist/test.js",
+    "build": "tsc -build"
   },
   "dependencies": {
     "cron-parser": "^4.9.0",

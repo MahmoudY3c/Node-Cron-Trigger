@@ -1,6 +1,6 @@
 // the value is an object of pairs key / value - key = task name and value = object that have your cron options
 
-import NodeCronTrigger, { ITaskOptions } from "./NodeCronTrigger";
+import NodeCronTrigger, { ITaskOptions } from ".";
 
 const tasks: ITaskOptions = {
   "runAt12AM": {
