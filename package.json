@@ -9,7 +9,7 @@
     "start": "gulp",
     "complie": "tsc -w",
     "dev": "nodemon dist/test.js",
-    "build": "tsc -build"
+    "build": "tsc"
   },
   "dependencies": {
     "cron-parser": "^4.9.0",

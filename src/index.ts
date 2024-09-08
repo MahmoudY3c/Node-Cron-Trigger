@@ -38,7 +38,7 @@ class NodeCronTrigger {
   Tasks: ITaskOptions = {};
   store: IStore;
 
-  constructor(tasks?: ITaskOptions, options?: { store?: IStore, historyFilePath?: string, historyFileName?: string }) {
+  constructor(tasks: ITaskOptions, options?: { store?: IStore, historyFilePath?: string, historyFileName?: string }) {
     // init store
     this.store = options?.store
       ? options.store
