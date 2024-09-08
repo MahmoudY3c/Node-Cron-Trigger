@@ -89,3 +89,4 @@ typings/
 yarn.lock
 
 dist
+publish

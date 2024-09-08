@@ -1,16 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-export interface IStore {
-  setItem: (key: string, value: any) => Promise<boolean>;
-  getItem: (key: string) => Promise<any>;
-  removeItem: (key: string) => Promise<boolean>;
-}
+export default class FileStore {
+  historyPath: string;
 
-class FileStore {
-  historyPath: string = '';
-
-  constructor() {
+  constructor(historyPath: string, historyFileName: string = 'history.log') {
+    if (!historyPath) throw new Error('historyPath must be provided')
+    this.historyPath = path.join(historyPath, historyFileName);
     this.#createHistoryLog();
   }
 
@@ -54,12 +50,10 @@ class FileStore {
   #getHistory() {
     // handle when the file accidentally deleted
     this.#createHistoryLog();
-    const data = JSON.parse(fs.readFileSync(this.historyPath, 'utf-8') || '{}');
-    return data;
+    return JSON.parse(fs.readFileSync(this.historyPath, 'utf-8') || '{}');
   }
 
   #createHistoryLog(): void {
-    this.historyPath = this.#dir('history.log');
     // check if the tasks history file exists in the current directory or not to create it
     if (!fs.existsSync(this.historyPath)) {
       fs.writeFileSync(this.historyPath, '{}');
@@ -70,11 +64,4 @@ class FileStore {
   #updateHistory(historyObject: any) {
     fs.writeFileSync(this.historyPath, JSON.stringify(historyObject), 'utf8');
   }
-
-  // get the dirname + add the file path
-  #dir(d: string) {
-    return path.resolve(__dirname, d);
-  }
 }
-
-export default FileStore;
