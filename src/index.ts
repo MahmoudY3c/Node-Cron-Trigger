@@ -38,6 +38,13 @@ export type INodeCronTriggerCronJobs = {
   cronTasks?: Map<string, ScheduledTask>;
 };
 
+/**
+ * @typedef {import('../types/index.d.ts').ITaskOptions} ITaskOptions
+ * @typedef {import('../types/index.d.ts').ITaskOptionsList} ITaskOptionsList
+ * @typedef {import('../types/index.d.ts').ITasksHistory} ITasksHistory
+ * @typedef {import('../types/index.d.ts').INodeCronTriggerCronJobs} INodeCronTriggerCronJobs
+ */
+
 export class NodeCronTrigger {
   cronJobs?: INodeCronTriggerCronJobs;
   Tasks: ITaskOptions = {};
