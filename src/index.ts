@@ -32,17 +32,23 @@ export type ITaskOptionsList = { logging?: boolean;[key: string]: any } & (
   | { historyFileName?: string, historyFilePath: string }
 )
 
-export class NodeCronTrigger {
-  cronJobs?: {
-    tasks?: ITaskOptions;
-    scheduledTasks?: ScheduledTask[];
-    cronTasks?: Map<string, ScheduledTask>;
-  };
+export type INodeCronTriggerCronJobs = {
+  tasks?: ITaskOptions;
+  scheduledTasks?: ScheduledTask[];
+  cronTasks?: Map<string, ScheduledTask>;
+};
 
+export class NodeCronTrigger {
+  cronJobs?: INodeCronTriggerCronJobs;
   Tasks: ITaskOptions = {};
   store: IStore;
   logging: boolean;
 
+  /**
+   * node cron wrapper provider
+   * @param { ITaskOptions } tasks 
+   * @param { ITaskOptionsList } options 
+   */
   constructor(tasks: ITaskOptions, options: ITaskOptionsList) {
     if (!options?.historyFilePath && !options?.store) {
       throw new Error('Please provide history file path or store instance');
@@ -190,6 +196,11 @@ export class NodeCronTrigger {
     await this.#updateHistory(tasksHistory);
   }
 
+  /**
+   * helper to get the history log data 
+   * ? Note: at the first usage time you may need to setTimeout to use this method because the history won't be available yet.
+   * @returns {Promise<ITasksHistory>}
+   */
   async getHistory(): Promise<ITasksHistory> {
     const data = await this.store.getItem('history');
     const tasks: ITasksHistory = JSON.parse(data || '{}');
@@ -210,17 +221,31 @@ export class NodeCronTrigger {
     await this.store.setItem('history', JSON.stringify(tasksObject));
   }
 
+  /**
+   * a helper function to get the next run time for your task if you need to check it out
+   * @param { string } schedule cron expression
+   * @returns { Date }
+   */
   // a function to convert cron expression to date
-  getTaskNextRunTime(schedule: string) {
+  getTaskNextRunTime(schedule: string): Date {
     const nextRun = cronParser.parseExpression(schedule).next();
     return nextRun.toDate();
   }
 
+  /**
+   * helper function to clear the logs history by self
+   * @returns {Promise<void>}
+   */
   async clearHistory(): Promise<void> {
     await this.store.removeItem('history');
   }
 
-  getJobs() {
+  /**
+   * get list of all your tasks data 
+   * ? Note: you may need to setTimeout to use this method because it task time to run tasks and update the cronJobs so 2s mybe enough
+   * @returns {INodeCronTriggerCronJobs | undefined}
+   */
+  getJobs(): INodeCronTriggerCronJobs | undefined {
     return this.cronJobs;
   }
 

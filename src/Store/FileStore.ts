@@ -4,12 +4,23 @@ import path from 'path';
 export default class FileStore {
   historyPath: string;
 
+  /**
+   * node-cron-trigger store provider
+   * @param {string} historyPath 
+   * @param {string} historyFileName 
+   */
   constructor(historyPath: string, historyFileName: string = 'history.log') {
     if (!historyPath) throw new Error('historyPath must be provided')
     this.historyPath = path.join(historyPath, historyFileName);
     this.#createHistoryLog();
   }
 
+  /**
+   * save the tasks history
+   * @param {string} key 
+   * @param {any} value 
+   * @returns {Promise<boolean>}
+   */
   setItem(key: string, value: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
@@ -23,6 +34,11 @@ export default class FileStore {
     });
   }
 
+  /**
+   * get the tasks history by key like 'history' key
+   * @param {string} key 
+   * @returns {Promise<any>}
+   */
   getItem(key: string): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
@@ -34,6 +50,11 @@ export default class FileStore {
     });
   }
 
+  /**
+   * remove the tasks history by key like 'history' key
+   * @param {string} key 
+   * @returns {Promise<boolean>}
+   */
   removeItem(key: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
