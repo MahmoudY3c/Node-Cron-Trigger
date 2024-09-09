@@ -1,15 +1,25 @@
 {
   "name": "node-cron-trigger",
-  "version": "1.0.3",
-  "main": "dist/NodeCronTrigger.js",
+  "version": "1.0.7",
+  "main": "dist/cjs/index.js",
   "repository": "https://github.com/MahmoudY3c/Node-Cron-Trigger.git",
   "author": "MahmoudY3c <wpsmahmoud25@gmail.com>",
-  "license": "MIT",
+  "homepage": "https://github.com/MahmoudY3c/Node-Cron-Trigger",
+  "description": "A Node cron wrapper to run your tasks even if their running time is gone",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
     "start": "gulp",
     "complie": "tsc -w",
     "dev": "nodemon dist/test.js",
-    "build": "tsc"
+    "build": "yarn build:cjs && yarn build:esm",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.json"
   },
   "dependencies": {
     "cron-parser": "^4.9.0",

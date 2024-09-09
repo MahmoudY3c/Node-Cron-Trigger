@@ -1,6 +1,10 @@
 // the value is an object of pairs key / value - key = task name and value = object that have your cron options
 
-import NodeCronTrigger, { ITaskOptions } from ".";
+import NodeCronTrigger, { ITaskOptions, ITaskOptionsList } from ".";
+
+const options: ITaskOptionsList = {
+  historyFilePath: __dirname
+};
 
 const tasks: ITaskOptions = {
   "runAt12AM": {
@@ -20,12 +24,12 @@ const tasks: ITaskOptions = {
   },
 };
 
-const runner = new NodeCronTrigger(tasks);
+const runner = new NodeCronTrigger(tasks, options);
 
 
 // setTimeout(() => {
-  // console.log(runner.Tasks)
-  // runner.store.getItem('history').then(history => console.log(JSON.parse(history), '............ history ..............'));
+// console.log(runner.Tasks)
+// runner.store.getItem('history').then(history => console.log(JSON.parse(history), '............ history ..............'));
 // }, 1000 * 2);
 
 // console.log(runner.getJobs());

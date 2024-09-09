@@ -1,7 +1,6 @@
 import cron, { ScheduleOptions, ScheduledTask } from 'node-cron';
 import cronParser from 'cron-parser';
 import FileStore from './Store/FileStore';
-import path from 'path';
 
 export interface IStore {
   setItem: (key: string, value: any) => Promise<boolean>;
@@ -28,6 +27,11 @@ export interface ITasksHistory {
   [key: string]: ITasksData;
 }
 
+export type ITaskOptionsList = { [key: string]: any } & (
+  { store: IStore }
+  | { historyFileName?: string, historyFilePath: string }
+)
+
 class NodeCronTrigger {
   cronJobs?: {
     tasks?: ITaskOptions;
@@ -38,11 +42,17 @@ class NodeCronTrigger {
   Tasks: ITaskOptions = {};
   store: IStore;
 
-  constructor(tasks: ITaskOptions, options?: { store?: IStore, historyFilePath?: string, historyFileName?: string }) {
+  constructor(tasks: ITaskOptions, options: ITaskOptionsList) {
+    if (!options?.historyFilePath && !options?.store) {
+      throw new Error('Please provide history file path or store instance');
+    }
+
     // init store
-    this.store = options?.store
-      ? options.store
-      : new FileStore(options?.historyFilePath || globalThis.process.cwd(), options?.historyFileName || '');
+    if (options?.store) {
+      this.store = options.store;
+    } else {
+      this.store = new FileStore(options?.historyFilePath, options?.historyFileName);
+    }
 
     if (tasks) {
       this.#init(tasks)
@@ -136,12 +146,14 @@ class NodeCronTrigger {
       const taskUpdatedDate = new Date(tasksHistory[task].nextRunDate);
       // check if the task expaired
       if (taskUpdatedDate < new Date()) {
-        console.log('\x1b[36m%s\x1b[0m', 'info:', `${task} has started`);
         // running the task
         if (!tasks[task]?.task) {
-          throw new Error('task function isn\'t available in your tasks object');
+          this.#removeHistoryKey(task, tasksHistory);
+          return; // skip when a task is defined but never used
+          // throw new Error('task function isn\'t available in your tasks object');
         }
 
+        console.log('\x1b[36m%s\x1b[0m', 'info:', `${task} has started`);
         // run the task
         tasks[task].task();
       }
@@ -167,6 +179,12 @@ class NodeCronTrigger {
     const data = await this.store.getItem('history');
     const tasks: ITasksHistory = JSON.parse(data || '{}');
     return tasks;
+  }
+
+  async #removeHistoryKey(key: string, history: ITasksHistory): Promise<boolean> {
+    delete history[key];
+    await this.store.setItem('history', JSON.stringify(history));
+    return true;
   }
 
   // saving the tasks next run date in history.log
