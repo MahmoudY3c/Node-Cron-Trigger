@@ -26,11 +26,22 @@ $ yarn add node-cron-trigger
   * __task:__ your task handler
 - `NodeCronTrigger` accepts 2 arguments first one start as descriped above and optional `options` argument which is an object that object allows you to specify your custom store instead of default filesystem store or the filesystem history.log file path, name like `new NodeCronTrigger({ historyFilePath: process.cwd(), historyFileName: 'tasks.log' })` or `new NodeCronTrigger({ store: new MyCustomStore() })`
 
+### Options
+- `logging` boolean, default is true (allows you to disable logging)
+- `store`: IStore, default is FileStore instance allows you to provide your own store to use it instead of default FileStore
+- `historyFilePath`: path to the history, this field is required when you are not providing a store it will require you to provide a path to the history file
+- `historyFileName`: allows you to change the history file name from `history.log` to any name you want
+
 - Usage example
 ``` javascript
-import NodeCronTrigger from "node-cron-trigger";
+import NodeCronTrigger, { ITaskOptions, ITaskOptionsList } from ".";
 
-const tasks = {
+const options: ITaskOptionsList = {
+  historyFilePath: __dirname,
+  logging: true,
+};
+
+const tasks: ITaskOptions = {
   "runAt12AM": {
     schedule: '0 0 0 * * *',
     options: {
@@ -40,14 +51,13 @@ const tasks = {
       console.log('hey whatever you did i will run at 12 AM even after restarting the server');
     },
   },
-  "runEach5Mins": {
-    schedule: '*/5 * * * *',
+  "runEach1Mins": {
+    schedule: '*/1 * * * *',
     task() {
-      console.log('hey whatever you did i will run each 5 minutes of any hour even after restarting the server');
+      console.log('hey whatever you did i will run each 1 minutes of any hour even after restarting the server');
     },
   },
 };
-
 const runner = new NodeCronTrigger(tasks);
 
 // get list of { tasks, scheduledTasks, cronTasks }

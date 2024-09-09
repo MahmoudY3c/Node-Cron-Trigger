@@ -27,7 +27,7 @@ export interface ITasksHistory {
   [key: string]: ITasksData;
 }
 
-export type ITaskOptionsList = { [key: string]: any } & (
+export type ITaskOptionsList = { logging?: boolean;[key: string]: any } & (
   { store: IStore }
   | { historyFileName?: string, historyFilePath: string }
 )
@@ -41,11 +41,19 @@ class NodeCronTrigger {
 
   Tasks: ITaskOptions = {};
   store: IStore;
+  logging: boolean;
 
   constructor(tasks: ITaskOptions, options: ITaskOptionsList) {
     if (!options?.historyFilePath && !options?.store) {
       throw new Error('Please provide history file path or store instance');
     }
+
+    // enable logging by default
+    if (typeof options.logging !== 'boolean') {
+      options.logging = true;
+    }
+
+    this.logging = options.logging;
 
     // init store
     if (options?.store) {
@@ -136,9 +144,12 @@ class NodeCronTrigger {
 
   // check and run expaired tasks on server startup
   async #runExpairedTasksOnStartup(tasks: ITaskOptions, history: ITasksHistory) {
-    console.log('==================================================');
-    console.log('checking for expaired tasks to run them on startup');
-    console.log('==================================================');
+    if (this.logging) {
+      console.log('==================================================');
+      console.log('checking for expaired tasks to run them on startup');
+      console.log('==================================================');
+    }
+
     // check if tasks history available or read it
     const tasksHistory = history ? history : await this.getHistory();
     Object.keys(tasksHistory).forEach(task => {
@@ -153,6 +164,7 @@ class NodeCronTrigger {
           // throw new Error('task function isn\'t available in your tasks object');
         }
 
+        
         console.log('\x1b[36m%s\x1b[0m', 'info:', `${task} has started`);
         // run the task
         tasks[task].task();
@@ -162,9 +174,12 @@ class NodeCronTrigger {
 
   // update tasks next run time
   async #updateTasksDate(tasks: ITaskOptions, history?: ITasksHistory) {
-    console.log('====================================');
-    console.log('updating tasks date ................');
-    console.log('====================================');
+    if (this.logging) {
+      console.log('====================================');
+      console.log('updating tasks date ................');
+      console.log('====================================');
+    }
+
     const tasksHistory = history ? history : await this.getHistory();
     Object.keys(tasksHistory).forEach(task => {
       if (tasks[task]) {

@@ -3,7 +3,8 @@
 import NodeCronTrigger, { ITaskOptions, ITaskOptionsList } from ".";
 
 const options: ITaskOptionsList = {
-  historyFilePath: __dirname
+  historyFilePath: __dirname,
+  logging: true,
 };
 
 const tasks: ITaskOptions = {
