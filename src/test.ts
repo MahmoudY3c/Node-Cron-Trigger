@@ -1,6 +1,6 @@
 // the value is an object of pairs key / value - key = task name and value = object that have your cron options
 
-import NodeCronTrigger, { ITaskOptions, ITaskOptionsList } from ".";
+import { NodeCronTrigger, ITaskOptions, ITaskOptionsList } from ".";
 
 const options: ITaskOptionsList = {
   historyFilePath: __dirname,

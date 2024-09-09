@@ -32,9 +32,9 @@ $ yarn add node-cron-trigger
 - `historyFilePath`: path to the history, this field is required when you are not providing a store it will require you to provide a path to the history file
 - `historyFileName`: allows you to change the history file name from `history.log` to any name you want
 
-- Usage example
+- Usage example ESM
 ``` javascript
-import NodeCronTrigger, { ITaskOptions, ITaskOptionsList } from ".";
+import { NodeCronTrigger, ITaskOptions, ITaskOptionsList } from "node-cron-trigger";
 
 const options: ITaskOptionsList = {
   historyFilePath: __dirname,
@@ -74,6 +74,28 @@ setTimeout(() => {
   console.log(runner.Tasks);
   runner.store.getItem('history').then(history => console.log(JSON.parse(history), '............ history ..............'));
 }, 1000 * 2);
+```
+
+- Usage example CJS
+``` js
+const { NodeCronTrigger } = require('node-cron-trigger');
+
+new NodeCronTrigger(
+  {
+    runEach1Mins: {
+      schedule: '*/1 * * * *',
+      task() {
+        console.log(
+          'hey whatever you did i will run each 1 minutes of any hour even after restarting the server'
+        );
+      }
+    }
+  },
+  {
+    historyFilePath: __dirname,
+    logging: false
+  }
+);
 ```
 
 

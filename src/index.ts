@@ -32,7 +32,7 @@ export type ITaskOptionsList = { logging?: boolean;[key: string]: any } & (
   | { historyFileName?: string, historyFilePath: string }
 )
 
-class NodeCronTrigger {
+export class NodeCronTrigger {
   cronJobs?: {
     tasks?: ITaskOptions;
     scheduledTasks?: ScheduledTask[];
@@ -164,7 +164,7 @@ class NodeCronTrigger {
           // throw new Error('task function isn\'t available in your tasks object');
         }
 
-        
+
         console.log('\x1b[36m%s\x1b[0m', 'info:', `${task} has started`);
         // run the task
         tasks[task].task();
@@ -229,4 +229,3 @@ class NodeCronTrigger {
   getTasks = cron.getTasks;
 }
 
-export default NodeCronTrigger;

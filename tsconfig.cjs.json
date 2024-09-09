@@ -6,7 +6,6 @@
     "declaration": false,
     "declarationMap": false,
     "declarationDir": null,
-    "allowJs": true,
     "resolveJsonModule": true
   }
 }
