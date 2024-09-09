@@ -101,7 +101,7 @@ new NodeCronTrigger(
 
 
 # Store 
-- storing data by `Node-Cron-Trigger` can made by any data store like databases or redis store or anything else by default it's using `FileStore` to store the history in log file but also you have the free to use your favorite data store but keep in mind that any data store is should provide 3 methods `setItem` which take the data as key, value like `localStorage` in browser + `getItem` which take the key as argument + `removeItem` which also take `key` as an argument and each one of them is should return a promise to handle any type of data storage you can checkout the example you can show it in `Store.ts` file 
+- storing data by `Node-Cron-Trigger` can made by any data store like databases or redis store or anything else by default it's using `FileStore` to store the history in log file but also you have the free to use your favorite data store but keep in mind that any data store is should provide 3 methods `setItem` which take the data as key, value like `localStorage` in browser + `getItem` which take the key as argument + `removeItem` which also take `key` as an argument and each one of them is should return a promise to handle any type of data storage you can checkout the example you can show it in `Store.ts` file [Store.ts](/src/Store/FileStore.ts)
 - in that store all data will be save as json string in key called `history` so if you planning to store history in a pre defined store like SQL you will need to define the `history` key as a string type like `nvarchar(max)`
 
 
