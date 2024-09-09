@@ -18,7 +18,12 @@
     "scheduler",
     "schedule",
     "task",
-    "job"
+    "job",
+    "node-cron-trigger",
+    "node-cron-wrapper",
+    "trigger",
+    "wrapper",
+    "re run"
   ],
   "bugs": {
     "url": "https://github.com/MahmoudY3c/Node-Cron-Trigger/issues"
