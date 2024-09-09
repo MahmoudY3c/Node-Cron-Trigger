@@ -1,6 +1,6 @@
 {
   "name": "node-cron-trigger",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "main": "dist/cjs/index.js",
   "repository": "https://github.com/MahmoudY3c/Node-Cron-Trigger.git",
   "author": "MahmoudY3c <wpsmahmoud25@gmail.com>",
@@ -12,6 +12,16 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
+  },
+  "keywords": [
+    "cron",
+    "scheduler",
+    "schedule",
+    "task",
+    "job"
+  ],
+  "bugs": {
+    "url": "https://github.com/MahmoudY3c/Node-Cron-Trigger/issues"
   },
   "scripts": {
     "start": "gulp",
